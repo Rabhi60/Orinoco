@@ -18,7 +18,7 @@ teddies.onreadystatechange = function() {
     if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
         var response = JSON.parse(this.responseText);
         let totalTeddies = response;
-        console.log(totalTeddies);
+        
 
         //let firstTeddyColor = response[0].colors;//détails 
         //let secondTeddy = response[1] ;
@@ -50,49 +50,53 @@ teddies.onreadystatechange = function() {
            {
            const divCol = document.createElement('div');
            divCol.classList.add('col-12');
+           divCol.classList.add('mb-3');
            const divCard = document.createElement('div');
-           divCard.classList.add('card');
+           divCard.classList.add('card', 'text-white', 'bg-dark');
            const imageUrl = document.createElement('img');
            imageUrl.classList.add('card-img-top');
            imageUrl.setAttribute('src', response[i].imageUrl);
            imageUrl.setAttribute('alt', response[i].description);
            const divCardBody = document.createElement('div');
            divCardBody.classList.add('card-body');
-           const name = document.createElement('p');
+           const name = document.createElement('h2');
+           name.classList.add('card-header');
            name.innerHTML = 'Produit :  '  + response[i].name;
-           const id = document.createElement('p');
-           id.innerHTML = 'Ref : ' + response[i]._id;
            const price = document.createElement('p');
            price.innerHTML = 'Prix : ' + response[i].price / 100 + ',00 euros';
-           const description = document.createElement('p');
-           description.innerHTML = 'Description : ' + response[i].description;
-           const select = document.createElement('select');
-           select.setAttribute('name', 'color');
-           select.setAttribute('id', response[i].name);
-           const colorOption1 =  document.createElement('option');
-           const colorOption2 =  document.createElement('option');
-           const colorOption3 =  document.createElement('option');
-           const colorOption4 =  document.createElement('option');
-           colorOption1.innerHTML =  response[i].colors[0];
-           colorOption2.innerHTML =  response[i].colors[1];
-           colorOption3.innerHTML =  response[i].colors[2];
-           colorOption4.innerHTML =  response[i].colors[3];
+           const addCard = document.createElement('a');
+           addCard.classList.add('btn', 'btn-primary');
+           addCard.innerHTML = 'Voir le Produit';
+            addCard.setAttribute('href',  "../Frontend/html/product-details.html?id="+response[i]._id);
+          // const id = document.createElement('p');
+          // id.innerHTML = 'Ref : ' + response[i]._id;
+          // const description = document.createElement('h3');
+          // description.innerHTML = 'Description : ' + response[i].description;
+          // const select = document.createElement('select');
+          // select.setAttribute('name', 'color');
+          // select.setAttribute('id', response[i].name);
+          // const colorOption1 =  document.createElement('option');
+          // const colorOption2 =  document.createElement('option');
+          // const colorOption3 =  document.createElement('option');
+          // const colorOption4 =  document.createElement('option');
+          // colorOption1.innerHTML =  response[i].colors[0];
+          // colorOption2.innerHTML =  response[i].colors[1];
+          // colorOption3.innerHTML =  response[i].colors[2];
+          // colorOption4.innerHTML =  response[i].colors[3];
            elementCard.append(divCol);
            divCol.append(divCard);
            divCard.append(imageUrl);
            divCard.append(divCardBody);
            divCardBody.append(name);
-           divCardBody.append(id);
            divCardBody.append(price);
-           divCardBody.append(description);
-           divCardBody.append(select);
-           select.append(colorOption1);
-           select.append(colorOption2);
-           select.append(colorOption3);
-           select.append(colorOption4);
-        
-        
-
+           divCardBody.append(addCard);
+         //  divCardBody.append(id);
+         //  divCardBody.append(description);
+          // divCardBody.append(select);
+          // select.append(colorOption1);
+          // select.append(colorOption2);
+          // select.append(colorOption3);
+          // select.append(colorOption4);
            } 
            }
            
@@ -170,4 +174,3 @@ teddies.onreadystatechange = function() {
 };
 teddies.open("GET", "http://localhost:3000/api/teddies");
 teddies.send();
-
