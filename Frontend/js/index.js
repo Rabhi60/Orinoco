@@ -4,57 +4,65 @@
 
 let elementCard = document.getElementById('element-card');
 
-// Récupération des images //
-const accueil = document.querySelector('#accueil');// bouton accueil actualiser la page
 
-
-var teddies = new XMLHttpRequest();
-teddies.onreadystatechange = function() {
-    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-        var response = JSON.parse(this.responseText);
-        let totalTeddies = response;
-
-      const updateTeddies = () => {
-        for  (let i in totalTeddies) { 
-           {
-           const divCol = document.createElement('div');// div de la structure .col et .card
-           divCol.classList.add('col-12','mb-3');
-           const divCard = document.createElement('div');
-           divCard.classList.add('card', 'text-white', 'bg-dark');
-
-           const imageUrl = document.createElement('img');//image
-           imageUrl.classList.add('card-img-top');
-           imageUrl.setAttribute('src', totalTeddies[i].imageUrl);
-           imageUrl.setAttribute('alt', totalTeddies[i].description);
-
-           const divCardBody = document.createElement('div');//card
-           divCardBody.classList.add('card-body');
-
-           const name = document.createElement('h2');//nom
-           name.classList.add('card-header');
-           name.innerHTML = 'Produit :  '  + totalTeddies[i].name;
-
-           const price = document.createElement('p');//prix
-           price.innerHTML = 'Prix : ' + totalTeddies[i].price / 100 + ',00 euros';
-           price.classList.add('mt-2');
-
-           const addCard = document.createElement('a');//button qui renvoie vers la page produit
-           addCard.classList.add('btn', 'btn-primary', 'float-right');
-           addCard.innerHTML = 'Voir le Produit';
-            addCard.setAttribute('href',  "../Frontend/html/product-details.html?id="+totalTeddies[i]._id);
-
-           elementCard.append(divCol);//ajout de la structure
-           divCol.append(divCard);
-           divCard.append(imageUrl, divCardBody);
-           divCardBody.append(name, price , addCard);
-           } 
-        }
-       };
-       updateTeddies();
-
-      
+// requete Get pour récuperer les produits
+(function() {
+    var teddies;
     
+  
+    function teddyRequest() {
+        teddies = new XMLHttpRequest();
+  
+      if (!teddies) {
+        console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
+        return false;
+      }
+      teddies.onreadystatechange = contents;
+      teddies.open('GET', "http://localhost:3000/api/teddies/");
+      teddies.send();
     }
-};
-teddies.open("GET", "http://localhost:3000/api/teddies");
-teddies.send();
+    teddyRequest();
+  
+    function contents() {
+        
+        try{
+            if (teddies.readyState === XMLHttpRequest.DONE) {
+                if (teddies.status === 200) {
+                    var response = JSON.parse(this.responseText);
+                    console.log("la requête a aboutit!");
+                    let totalTeddies = response;
+
+                    // Declaration function
+                    const updateTeddies = () => {
+
+                        for  (let i in totalTeddies) { //boucle for qui va récuperer les produits un à un
+                            {
+                                elementCard.innerHTML +=    `<div class="col-12 mb-3"> 
+                                                                <div class="card text-white bg-dark">
+                                                                    <img class="card-img-top" src="${totalTeddies[i].imageUrl}" alt="${totalTeddies[i].description}"></img>
+                                                                    <div class="card-body">
+                                                                        <h2 class="card-header"> Produit : ${totalTeddies[i].name} </h2>
+                                                                        <p class="mt-2">Prix :  ${(totalTeddies[i].price/100)},00 €</p>
+                                                                        <p>Ref :  ${totalTeddies[i]._id}</p>
+                                                                        <a class="col-12 btn btn-primary mb-2 mt-2 col-md-3 float-right" href="../Frontend/html/product-details.html?id=${totalTeddies[i]._id}">Voir le Produit</a>
+                                                                        <a class="col-12 btn btn-success mb-2 mt-2 col-md-3 mr-md-3 float-right" href="#">Acheter</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`;
+                                } 
+                            }
+                    };
+                    updateTeddies();
+                    
+                } else {
+                    console.error('Il y a eu un problème avec la requête.');
+                }
+            }
+        }
+        catch( e ) {
+            console.log("Une exception s’est produite : " + e.description);
+        }    
+    }
+})();
+
+
