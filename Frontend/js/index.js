@@ -13,7 +13,6 @@ let codeError = `<div class="col text-center">
 (function() {
     var teddies;
     
-  
     async function teddiesRequest  ()  {
         teddies = new XMLHttpRequest();
   

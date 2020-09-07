@@ -1,7 +1,5 @@
 // page produit
 
-
-
 //constantes globales
 let elementCard = document.getElementById('element-card'); 
 let codeError = `<div class="col text-center">
@@ -10,49 +8,41 @@ let codeError = `<div class="col text-center">
                     <p>veuillez nous excuser pour la gêne occasionnée</p>
                 </div>`;
 
-
 //recherche de la partie id de l'url
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
 
-
-
 // requete get pour recuperer un seul objet
-(function() {
-    var teddy;
-    
-  
-    async function teddyRequest() {
-      teddy = new XMLHttpRequest();
+(function() {//closure 
+    var teddy;// déclaration de la variable teddy
+
+    async function teddyRequest() {// function teddyRequest()
+      teddy = new XMLHttpRequest(); //on crée un nouvel objet de type  XMLHttpRequest  qui correspond à notre objet AJAX. C'est grâce à lui qu'on va créer et envoyer notre requête
   
       if (!teddy) {
         console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
         elementCard.innerHTML =  codeError;
         return false;
       }
-      teddy.onreadystatechange = contents;
-      teddy.open('GET', "http://localhost:3000/api/teddies/"+id);
-      teddy.send();
+      teddy.onreadystatechange = contents;// Pour récupérer l'état actuel de la requête, la fonction que l'on passe à  onreadystatechange  contiendra un objet  this  directement accessible dans la fonction, et qui nous permettra d'accéder aux propriétés suivantes : readyState, status, responseTexte.
+      teddy.open('GET', "http://localhost:3000/api/teddies/"+id);//on demande à ouvrir une connexion vers notre serveur + id pour récuperer un objet.  méthode HTTP pour récuperer est GET 
+      teddy.send();//on envoie finalement la requête 
       return true;
     }
-    teddyRequest().then(result => console.log(result));
+    teddyRequest().then(result => console.log(result));//on test pour savoir s'il y a une erreur, si true = la requête est ok.
       
     
- 
     async function contents() {
-        
         try{
             if (teddy.readyState === XMLHttpRequest.DONE) {
                 if (teddy.status === 200) {
-                    var response = JSON.parse(this.responseText);
-                    console.log("la requête a aboutit!");
+                    let response = JSON.parse(this.responseText);
+                    console.log("la requête a aboutit!");//console.log la requête a aboutit
                     let teddyChoice = response;
 
                     // Declaration function
-                    const updateTeddyChoice = () => {
-
-                       
-
+                    const updateTeddyChoice = () => {//function en fleche qui contient notre template
+                      
                         elementCard.innerHTML = `<div class="col-12 mb-3"> 
                                                     <div class="card text-white bg-dark">
                                                         <img class="card-img-top" src="${teddyChoice.imageUrl}" alt="${teddyChoice.description}"></img>
@@ -64,14 +54,13 @@ const id = urlParams.get('id');
                                                             <p>Ref :  ${teddyChoice._id}</p>
                                                             <p>Description :  ${teddyChoice.description}</p>
                                                             <select name="color" id="select">
-                                                             
+                                                                <option value='default' disabled 'selected'='selected'> Couleur </option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>`;
 
-                        let select = document.getElementById("select");
-                        
+                        let select = document.getElementById("select");//pointe vers #select dans notre HTML
                         
                         for (let i in teddyChoice.colors){ //boucle for pour les couleurs
                         {
@@ -82,75 +71,49 @@ const id = urlParams.get('id');
                         select.append(colorOption);
                             }
                         }
-                        
-                        
-                        
                     };
                     updateTeddyChoice();
                     
-                   // select.addEventListener("click", updateValue);
-                   //     function updateValue(e) {
-                   //         let colorChoice = ''
-                   //          colorChoice.textContent = e.target.value;
-                   //         console.log(colorChoice);
-                   //       }
-                   //   
+          
                     let buttonBuy = document.getElementById('buy');//le chemin vers le bouton acheter
-                    let buttonDelete = document.getElementById('delete');
-                   
-                    
-                    
-                    
-                    
-                    
-                    
-                    buttonBuy.addEventListener('click', function() {
-                        let colorChoice = document.querySelector('#select').value ;
+                    let buttonDelete = document.getElementById('delete'); //le chemin vers le bouton supprimer
+
+                    buttonBuy.addEventListener('click', function() {// cliquer sur le bouton acheter pour mettre au panier le produit choisie
+                        let colorChoice = document.querySelector('#select').value ;// on selectionne la couleur puis on recharge la page pour avoir le bon index couleur
                         window.location.reload()
-                        let panier = JSON.parse(localStorage.getItem('articleChoice')) || [];
-                        let existingProductIndex =  panier.findIndex(Prod => Prod.id === id);
-                        let existingProduct = panier[existingProductIndex];
-                        console.log(existingProductIndex);
+                        let panier = JSON.parse(localStorage.getItem('articleChoice')) || [];//on recuperer les données dans le localStorage si on en a un 
+                        let existingProductIndex =  panier.findIndex(Prod => Prod.id === id);// on cherche l'index du produit exisant
+                        let existingProduct = panier[existingProductIndex];// on stock la variable précédente pour la réutilisée dans nos conditions
+                        console.log(existingProductIndex);//permet de voir si on a bien récuperer le bon index
                         
                         let article = {"name": teddyChoice.name, "price": teddyChoice.price/100, "id": teddyChoice._id, "imageUrl": teddyChoice.imageUrl,"color": colorChoice, "qty": 1}
                             if(typeof(Storage) !== "undefined") {
-                                if(localStorage.length === 0) {
-                                    
+                                if(localStorage.length === 0) { 
                                     panier.push(article);
                                     localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
                                     
-                                  
                                 }else if (existingProduct && (existingProduct.color == article.color)){
-                                   
-                                   
+                            
                                     panier[existingProductIndex].qty = panier[existingProductIndex].qty + 1 ;
                                     localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
-                                    
-                                    
+                                
                                 } else {
                                    
                                     panier.push(article);
                                     localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
                                 }
-                        
-                         
                             }
-                           
                             window.location.reload()
                     });
                    
-                    buttonDelete.addEventListener('click', function() 
+                    buttonDelete.addEventListener('click', function() //function pour le bouton supprimer 
                     {
-                        
                         if(typeof(Storage)) {
                             if(localStorage) {
-                                
                                 localStorage.clear();
-
                             }
                         }
                     });
-                   
 
                 } else {
                     console.error('Il y a eu un problème avec la requête.');
@@ -162,7 +125,4 @@ const id = urlParams.get('id');
             console.log("Une exception s’est produite : " + e);
         }    
     }
-
-  
-    
 })()
