@@ -48,8 +48,7 @@ const id = urlParams.get('id');
                                                         <img class="card-img-top" src="${teddyChoice.imageUrl}" alt="${teddyChoice.description}"></img>
                                                         <div class="card-body">
                                                             <h2 class="card-header"> Produit : ${teddyChoice.name} </h2>
-                                                            <a class="btn btn-success col-12 col-md-3 mb-2 mt-2 float-right" href="#" id="buy" >Acheter</a>
-                                                            <a class="btn btn-danger col-12 col-md-3 mb-2 mt-2 mx-2 float-right" href="#" id="delete" >Vider le panier</a>
+                                                            <a class="btn btn-success col-12 col-md-3 mb-2 mt-2 float-right" href="./cart.html" id="buy" >Acheter</a>
                                                             <p>Prix : ${(teddyChoice.price/100)},00 € </p>
                                                             <p>Ref :  ${teddyChoice._id}</p>
                                                             <p>Description :  ${teddyChoice.description}</p>
@@ -76,7 +75,7 @@ const id = urlParams.get('id');
                     
           
                     let buttonBuy = document.getElementById('buy');//le chemin vers le bouton acheter
-                    let buttonDelete = document.getElementById('delete'); //le chemin vers le bouton supprimer
+                   // let buttonDelete = document.getElementById('delete'); //le chemin vers le bouton supprimer
 
                     buttonBuy.addEventListener('click', function() {// cliquer sur le bouton acheter pour mettre au panier le produit choisie
                         let colorChoice = document.querySelector('#select').value ;// on selectionne la couleur puis on recharge la page pour avoir le bon index couleur
@@ -103,17 +102,19 @@ const id = urlParams.get('id');
                                     localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
                                 }
                             }
+
+                            
                             window.location.reload()
                     });
                    
-                    buttonDelete.addEventListener('click', function() //function pour le bouton supprimer 
-                    {
-                        if(typeof(Storage)) {
-                            if(localStorage) {
-                                localStorage.clear();
-                            }
-                        }
-                    });
+                //    buttonDelete.addEventListener('click', function() //function pour le bouton supprimer 
+                //    {
+                //        if(typeof(Storage)) {
+                //            if(localStorage) {
+                //                localStorage.clear();
+                //            }
+                //        }
+                //    });
 
                 } else {
                     console.error('Il y a eu un problème avec la requête.');
