@@ -91,7 +91,10 @@ allStorage().then(function(totalArticleChoice){
    })();
 
     // Envoi des données au serveur
-   
+    let resultatTotalPrice = 0;
+        if (localStorage.length>=1){
+        for (let i=0; i < totalArticleChoice.length; i++) {//card contenant le total des prix.
+            resultatTotalPrice += (totalArticleChoice[i].price * totalArticleChoice[i].qty);}}
      function Send (){
         let firstName = document.getElementById('firstName').value;
         let lastName = document.getElementById('lastName').value;
@@ -101,6 +104,9 @@ allStorage().then(function(totalArticleChoice){
         let contact = {'firstName': firstName,  'lastName': lastName, 'address': address,  'city': city, 'email': email};
         let products = [];
         let body = {  contact, products };
+
+        
+        
         totalArticleChoice.forEach( item => {
             products.push(item.id);
             
@@ -110,27 +116,27 @@ allStorage().then(function(totalArticleChoice){
         orderTeddies.setRequestHeader('content-type','application/json');
         orderTeddies.send(JSON.stringify(body));
         
-
+      
        orderTeddies.onreadystatechange =  function () {
-        let result = document.querySelector('#result');
         if (this.readyState == 4 && this.status == 201) {
           let response = JSON.parse(this.responseText);
            // console.log(response);
-            result.innerHTML = response.orderId;
-            
-            let commande = {"numero": response.orderId};
-            let getLocalStorage = JSON.parse(localStorage.getItem('commande')) || [];
-            getLocalStorage.push(commande);
-            localStorage.setItem('commande', JSON.stringify(getLocalStorage)) || [];
+
+            let order = response.orderId;
+            let getLocalStorage = JSON.parse(localStorage.getItem('validate')) || [];
+            getLocalStorage.push(order);
+            localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
+            getLocalStorage.push(resultatTotalPrice);
+            localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
             for (let i = 0; i < localStorage.length; i++){//boucle for pour récuperer les produits dans le localStorage
                 let key = localStorage.key(i)
                 let resultatFinal = (key, JSON.parse(localStorage.getItem(key)))
-                console.log(resultatFinal);
+                //console.log(resultatFinal);
                 //return resultatFinal;
             }
-       
         }
       }
+       
      // console.log(body);
     }
 
@@ -138,6 +144,11 @@ allStorage().then(function(totalArticleChoice){
     buttonValidate.addEventListener('click', function block(event){
         event.preventDefault();
        Send();
+       localStorage.clear();
+       setTimeout(function() {
+        window.location.replace("confirmed.html");
+    }, 500);
+        
     })
 });
 

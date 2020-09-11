@@ -75,7 +75,6 @@ const id = urlParams.get('id');
                     
           
                     let buttonBuy = document.getElementById('buy');//le chemin vers le bouton acheter
-                   // let buttonDelete = document.getElementById('delete'); //le chemin vers le bouton supprimer
 
                     buttonBuy.addEventListener('click', function() {// cliquer sur le bouton acheter pour mettre au panier le produit choisie
                         let colorChoice = document.querySelector('#select').value ;// on selectionne la couleur puis on recharge la page pour avoir le bon index couleur
@@ -86,35 +85,25 @@ const id = urlParams.get('id');
                         console.log(existingProductIndex);//permet de voir si on a bien récuperer le bon index
                         
                         let article = {"name": teddyChoice.name, "price": teddyChoice.price/100, "id": teddyChoice._id, "imageUrl": teddyChoice.imageUrl,"color": colorChoice, "qty": 1}
-                            if(typeof(Storage) !== "undefined") {
-                                if(localStorage.length === 0) { 
-                                    panier.push(article);
-                                    localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
-                                    
-                                }else if (existingProduct && (existingProduct.color == article.color)){
-                            
-                                    panier[existingProductIndex].qty = panier[existingProductIndex].qty + 1 ;
-                                    localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
+                        if(typeof(Storage) !== "undefined") {
+                            if(localStorage.length === 0) { 
+                                panier.push(article);
+                                localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
                                 
-                                } else {
-                                   
-                                    panier.push(article);
-                                    localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
-                                }
-                            }
-
+                            }else if (existingProduct && (existingProduct.color == article.color)){
+                        
+                                panier[existingProductIndex].qty = panier[existingProductIndex].qty + 1 ;
+                                localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
                             
-                            window.location.reload()
+                            } else {
+                                
+                                panier.push(article);
+                                localStorage.setItem('articleChoice', JSON.stringify(panier)) || [];
+                            }
+                        }
                     });
                    
-                //    buttonDelete.addEventListener('click', function() //function pour le bouton supprimer 
-                //    {
-                //        if(typeof(Storage)) {
-                //            if(localStorage) {
-                //                localStorage.clear();
-                //            }
-                //        }
-                //    });
+               
 
                 } else {
                     console.error('Il y a eu un problème avec la requête.');
