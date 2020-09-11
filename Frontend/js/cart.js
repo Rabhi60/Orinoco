@@ -70,25 +70,9 @@ allStorage().then(function(totalArticleChoice){
 });
 
 allStorage().then(function(totalArticleChoice){
-    // partie formulaire
-
-   (function() {
-       'use strict';
-        window.addEventListener('load', function() {
-           // Nous allons récupérer le formulaire et lui appliquer des styles de validations.
-           let forms = document.getElementsByClassName('needs-validation');
-           // tant que le formulaire n'est pas valide on bloque la soumission.
-           let validation = Array.prototype.filter.call(forms, function(form) {
-             form.addEventListener('submit', function(event) {
-               if (form.checkValidity() === false) {
-                 event.preventDefault();
-                 event.stopPropagation();
-               }
-               form.classList.add('was-validated');
-             }, false);
-           });
-       }, false);
-   })();
+    
+   
+   
 
     // Envoi des données au serveur
     let resultatTotalPrice = 0;
@@ -121,19 +105,12 @@ allStorage().then(function(totalArticleChoice){
         if (this.readyState == 4 && this.status == 201) {
           let response = JSON.parse(this.responseText);
            // console.log(response);
-
             let order = response.orderId;
             let getLocalStorage = JSON.parse(localStorage.getItem('validate')) || [];
             getLocalStorage.push(order);
             localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
             getLocalStorage.push(resultatTotalPrice);
             localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
-            for (let i = 0; i < localStorage.length; i++){//boucle for pour récuperer les produits dans le localStorage
-                let key = localStorage.key(i)
-                let resultatFinal = (key, JSON.parse(localStorage.getItem(key)))
-                //console.log(resultatFinal);
-                //return resultatFinal;
-            }
         }
       }
        
@@ -142,12 +119,24 @@ allStorage().then(function(totalArticleChoice){
 
     let buttonValidate = document.querySelector('#button');
     buttonValidate.addEventListener('click', function block(event){
+        let forms = document.getElementsByClassName('needs-validation');
         event.preventDefault();
-       Send();
-       localStorage.clear();
-       setTimeout(function() {
-        window.location.replace("confirmed.html");
-    }, 500);
+        let validation = Array.prototype.filter.call(forms, function(form) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+            } else if (form.checkValidity() === true){
+                Send();
+                localStorage.clear();
+                setTimeout(function() {
+                 window.location.replace("confirmed.html");
+             }, 500);
+            }
+        });
+       
+          
+     
         
     })
 });
