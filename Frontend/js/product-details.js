@@ -16,7 +16,7 @@ const id = urlParams.get('id');
 (function() {//closure 
     var teddy;// déclaration de la variable teddy
 
-    async function teddyRequest() {// function teddyRequest()
+     function teddyRequest() {// function teddyRequest()
       teddy = new XMLHttpRequest(); //on crée un nouvel objet de type  XMLHttpRequest  qui correspond à notre objet AJAX. C'est grâce à lui qu'on va créer et envoyer notre requête
   
       if (!teddy) {
@@ -29,10 +29,10 @@ const id = urlParams.get('id');
       teddy.send();//on envoie finalement la requête 
       return true;
     }
-    teddyRequest().then(result => console.log(result));//on test pour savoir s'il y a une erreur, si true = la requête est ok.
+    teddyRequest()
       
     
-    async function contents() {
+     function contents() {
         try{
             if (teddy.readyState === XMLHttpRequest.DONE) {
                 if (teddy.status === 200) {

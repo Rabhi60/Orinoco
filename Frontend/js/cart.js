@@ -15,12 +15,12 @@ async function allStorage () {
 
     for(let i in totalArticleChoice){//boucle for pour le template dans le panier
         {
-        elementCard.innerHTML += `<div class="mx-auto mb-3" style="width: 65vw;" > 
+        elementCard.innerHTML += `<div class="mx-auto mb-3" style="width: 80vw;" > 
                                     <div class="card text-white bg-dark">
 
                                         <div class="card-body">
                                             <h2 class="card-header"> Produit : ${totalArticleChoice[i].name} </h2>
-                                            <img class=" my-2 mx-auto float-sm-right "  width='165' height='120'  src="${totalArticleChoice[i].imageUrl}" alt="${totalArticleChoice[i].name}"></img>
+                                            <img class=" my-2 mx-auto float-sm-right "  width='210' height='120'  src="${totalArticleChoice[i].imageUrl}" alt="${totalArticleChoice[i].name}"></img>
                                             <p >Prix : ${(totalArticleChoice[i].price)},00 € </p>
                                             <p id="${totalArticleChoice[i].id}">Ref :  ${totalArticleChoice[i].id}</p>
                                             <p>Couleur choisie : ${totalArticleChoice[i].color}</p>
@@ -36,11 +36,12 @@ async function allStorage () {
 allStorage().then(function(totalArticleChoice){
     let resultatTotalPrice = 0;
     let resultatTotalQuantité = 0;
+    
     if (localStorage.length>=1){
         for (let i=0; i < totalArticleChoice.length; i++) {//card contenant le total des prix.
             resultatTotalPrice += (totalArticleChoice[i].price * totalArticleChoice[i].qty);
             resultatTotalQuantité += (totalArticleChoice[i].qty);
-            totalBuy.innerHTML =   `<div class="mx-auto mb-3" style="width: 65vw;" > 
+            totalBuy.innerHTML =   `<div class="mx-auto mb-3" style="width: 80vw;" > 
                                     <div class="card text-white bg-success">
                                         <h2 class="card-header"> Prix Total :  </h2>
                                         <div class="card-body" >
@@ -71,15 +72,16 @@ allStorage().then(function(totalArticleChoice){
 
 allStorage().then(function(totalArticleChoice){
     
-   
-   
-
     // Envoi des données au serveur
     let resultatTotalPrice = 0;
-        if (localStorage.length>=1){
+    
+    if (localStorage.length>=1){
         for (let i=0; i < totalArticleChoice.length; i++) {//card contenant le total des prix.
-            resultatTotalPrice += (totalArticleChoice[i].price * totalArticleChoice[i].qty);}}
-     function Send (){
+            resultatTotalPrice += (totalArticleChoice[i].price * totalArticleChoice[i].qty);
+        }
+    }
+
+    function Send (){
         let firstName = document.getElementById('firstName').value;
         let lastName = document.getElementById('lastName').value;
         let address = document.getElementById('address').value;
@@ -89,18 +91,17 @@ allStorage().then(function(totalArticleChoice){
         let products = [];
         let body = {  contact, products };
 
-        
-        
         totalArticleChoice.forEach( item => {
             products.push(item.id);
             
         })
+
         let orderTeddies = new XMLHttpRequest();
         orderTeddies.open('POST','http://localhost:3000/api/teddies/order');
         orderTeddies.setRequestHeader('content-type','application/json');
         orderTeddies.send(JSON.stringify(body));
         
-      
+        
        orderTeddies.onreadystatechange =  function () {
         if (this.readyState == 4 && this.status == 201) {
           let response = JSON.parse(this.responseText);
@@ -113,7 +114,6 @@ allStorage().then(function(totalArticleChoice){
             localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
         }
       }
-       
      // console.log(body);
     }
 
@@ -126,7 +126,11 @@ allStorage().then(function(totalArticleChoice){
                 event.preventDefault();
                 event.stopPropagation();
                 form.classList.add('was-validated');
-            } else if (form.checkValidity() === true){
+            } else if (localStorage.length === 0){
+                event.preventDefault();
+                elementCard.innerHTML = "<h2 class='text-center'>Veuillez choisir au moins un teddy</h2>";
+            }
+            else if (form.checkValidity() === true && localStorage.length >=1){
                 Send();
                 localStorage.clear();
                 setTimeout(function() {
@@ -134,10 +138,6 @@ allStorage().then(function(totalArticleChoice){
              }, 500);
             }
         });
-       
-          
-     
-        
     })
 });
 

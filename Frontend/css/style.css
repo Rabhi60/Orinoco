@@ -1,7 +1,23 @@
 
 a{
-   text-decoration: none; 
+   text-decoration: none !important; 
 }
+
 p{
-    font-size: 2em;
+    font-size: 1.5em;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+main{
+    margin-bottom: 8em;
+}
+
+.panier{
+    margin-top: -0.2em;
 }
