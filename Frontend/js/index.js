@@ -9,10 +9,14 @@ let teddies;
         return new Promise((resolve, reject) =>{
             teddies = new XMLHttpRequest();
             teddies.open('GET', "http://localhost:3000/api/teddies/");
-            teddies.onload = function () {
+            teddies.onreadystatechange = function () {
                try{
                     if (teddies.readyState === XMLHttpRequest.DONE) {
-                        if (teddies.status === 200) {
+                        if (!teddies) {
+                            console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
+                            elementCard.innerHTML =  codeError;
+                            return false;
+                        }if (teddies.status === 200) {
                             let response = JSON.parse(this.responseText);
                             console.log(response);
                             console.log("la requête a aboutit!");
@@ -28,7 +32,7 @@ let teddies;
                         }
                     }  
                } catch ( e ) {
-                alert("Une exception s’est produite : " + e.description);
+                console.error("Une exception s’est produite : " + e.description);
                }
             }
         teddies.send();

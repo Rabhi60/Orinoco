@@ -13,62 +13,62 @@ async function allStorage () {
     }
 }allStorage().then(function(totalArticleChoice){
 
-    for(let i in totalArticleChoice){//boucle for pour le template dans le panier
-        {
-        elementCard.innerHTML += `<div class="mx-auto mb-3" style="width: 80vw;" > 
-                                    <div class="card text-white bg-dark">
+        for(let i in totalArticleChoice){//boucle for pour le template dans le panier
+            {
+            elementCard.innerHTML += `<div class="mx-auto mb-3" style="width: 80vw;" > 
+                                        <div class="card text-white bg-dark">
 
-                                        <div class="card-body">
-                                            <h2 class="card-header"> Produit : ${totalArticleChoice[i].name} </h2>
-                                            <img class=" my-2 mx-auto float-sm-right "  width='210' height='120'  src="${totalArticleChoice[i].imageUrl}" alt="${totalArticleChoice[i].name}"></img>
-                                            <p >Prix : ${(totalArticleChoice[i].price)},00 € </p>
-                                            <p id="${totalArticleChoice[i].id}">Ref :  ${totalArticleChoice[i].id}</p>
-                                            <p>Couleur choisie : ${totalArticleChoice[i].color}</p>
-                                            <p>Quantité :  ${totalArticleChoice[i].qty}</p>
-                                            <p>Total produit : ${totalArticleChoice[i].price * totalArticleChoice[i].qty} €</p>
+                                            <div class="card-body">
+                                                <h2 class="card-header"> Produit : ${totalArticleChoice[i].name} </h2>
+                                                <img class=" my-2 mx-auto float-sm-right "  width='210' height='120'  src="${totalArticleChoice[i].imageUrl}" alt="${totalArticleChoice[i].name}"></img>
+                                                <p >Prix : ${(totalArticleChoice[i].price)},00 € </p>
+                                                <p id="${totalArticleChoice[i].id}">Ref :  ${totalArticleChoice[i].id}</p>
+                                                <p>Couleur choisie : ${totalArticleChoice[i].color}</p>
+                                                <p>Quantité :  ${totalArticleChoice[i].qty}</p>
+                                                <p>Total produit : ${totalArticleChoice[i].price * totalArticleChoice[i].qty} €</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>`; 
+                                    </div>`; 
+            }
         }
-    }
-});
+    })
 
 allStorage().then(function(totalArticleChoice){
-    let resultatTotalPrice = 0;
-    let resultatTotalQuantité = 0;
-    
-    if (localStorage.length>=1){
-        for (let i=0; i < totalArticleChoice.length; i++) {//card contenant le total des prix.
-            resultatTotalPrice += (totalArticleChoice[i].price * totalArticleChoice[i].qty);
-            resultatTotalQuantité += (totalArticleChoice[i].qty);
-            totalBuy.innerHTML =   `<div class="mx-auto mb-3" style="width: 80vw;" > 
-                                    <div class="card text-white bg-success">
-                                        <h2 class="card-header"> Prix Total :  </h2>
-                                        <div class="card-body" >
-                                            <p>Prix total  : ${resultatTotalPrice} €</p>
-                                            <p>Quantité total : ${resultatTotalQuantité} produit(s).</p>
-                                            <p>Veuillez remplir le formulaire ci-dessous pour valider votre panier</p>
-                                            <a class="btn btn-danger col-12  col-md-3 mb-2 mt-1 float-right" href="#" id="delete" >Vider le panier</a>
+        let resultatTotalPrice = 0;
+        let resultatTotalQuantité = 0;
+        
+        if (localStorage.length>=1){
+            for (let i=0; i < totalArticleChoice.length; i++) {//card contenant le total des prix.
+                resultatTotalPrice += (totalArticleChoice[i].price * totalArticleChoice[i].qty);
+                resultatTotalQuantité += (totalArticleChoice[i].qty);
+                totalBuy.innerHTML =   `<div class="mx-auto mb-3" style="width: 80vw;" > 
+                                        <div class="card text-white bg-success">
+                                            <h2 class="card-header"> Prix Total :  </h2>
+                                            <div class="card-body" >
+                                                <p>Prix total  : ${resultatTotalPrice} €</p>
+                                                <p>Quantité total : ${resultatTotalQuantité} produit(s).</p>
+                                                <p>Veuillez remplir le formulaire ci-dessous pour valider votre panier</p>
+                                                <a class="btn btn-danger col-12  col-md-3 mb-2 mt-1 float-right" href="#" id="delete" >Vider le panier</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>`; 
-                    }
-            
-            let buttonDelete = document.getElementById('delete');// appel de l'id delete pour le bouton supprimer
-    
-            buttonDelete.addEventListener('click', function(){  //function pour le bouton supprimer
-                if(typeof(Storage)) {
-                        if(localStorage) {
-                            localStorage.clear();//supprimer le localStorage
-                            window.location.reload()//rachaichir la page
+                                    </div>`; 
                         }
-                    }
-                });
-    
-    } else {
-        elementCard.innerHTML = "<h2 class='text-center'>Votre panier est vide :(</h2>";
-    }
-});
+                
+                let buttonDelete = document.getElementById('delete');// appel de l'id delete pour le bouton supprimer
+        
+                buttonDelete.addEventListener('click', function(){  //function pour le bouton supprimer
+                    if(typeof(Storage)) {
+                            if(localStorage) {
+                                localStorage.clear();//supprimer le localStorage
+                                window.location.reload()//rachaichir la page
+                            }
+                        }
+                    });
+        
+        } else {
+            elementCard.innerHTML = "<h2 class='text-center'>Votre panier est vide :(</h2>";
+        }
+    })
 
 allStorage().then(function(totalArticleChoice){
     

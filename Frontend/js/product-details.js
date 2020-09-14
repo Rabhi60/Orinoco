@@ -1,7 +1,8 @@
-// page produit
+// page product-detail.js affiche un seul produit dynamiquement
 
 //constantes globales
 let elementCard = document.getElementById('element-card'); 
+let teddy;// déclaration de la variable teddy
 let codeError = `<div class="col text-center">
                     <h2> Error 400</h2>
                     <h3>Bad Request</h3>
@@ -13,37 +14,43 @@ const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
 
 // requete get pour recuperer un seul objet
-(function() {//closure 
-    var teddy;// déclaration de la variable teddy
+let teddyRequest = () => { // function teddyRequest()
+    return new Promise((resolve, reject) =>{
+        teddy = new XMLHttpRequest();
+        teddy.open('GET', "http://localhost:3000/api/teddies/"+id);//on demande à ouvrir une connexion vers notre serveur + id pour récuperer un objet.  méthode HTTP pour récuperer est GET 
+        teddy.onreadystatechange = function () { // Pour récupérer l'état actuel de la requête, la fonction que l'on passe à  onreadystatechange  contiendra un objet  this  directement accessible dans la fonction, et qui nous permettra d'accéder aux propriétés suivantes : readyState, status, responseTexte.
+           try{
+                if (teddy.readyState === XMLHttpRequest.DONE) {
+                       if (!teddy) {
+                        console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
+                        elementCard.innerHTML =  codeError;
+                        return false;
+                    }if (teddy.status === 200) {
+                        let response = JSON.parse(this.responseText);
+                        console.log(response);
+                        console.log("la requête a aboutit!");
+                        let teddyChoice = response;
+                        resolve(teddyChoice)
+                    }else {
+                        reject(teddy.statusText)
+                        console.error('Il y a eu un problème avec la requête.' + teddy.statusText);
+                        elementCard.innerHTML =  `<div class="col text-center">
+                        <h2> ${teddy.statusText}</h2>
+                        <p>veuillez nous excuser pour la gêne occasionnée</p>
+                    </div>`;
+                    }
+                }  
+           } catch ( e ) {
+            alert("Une exception s’est produite : " + e.description);
+           }
+        }
+    teddy.send();//on envoie finalement la requête 
+    })
+}
 
-     function teddyRequest() {// function teddyRequest()
-      teddy = new XMLHttpRequest(); //on crée un nouvel objet de type  XMLHttpRequest  qui correspond à notre objet AJAX. C'est grâce à lui qu'on va créer et envoyer notre requête
-  
-      if (!teddy) {
-        console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
-        elementCard.innerHTML =  codeError;
-        return false;
-      }
-      teddy.onreadystatechange = contents;// Pour récupérer l'état actuel de la requête, la fonction que l'on passe à  onreadystatechange  contiendra un objet  this  directement accessible dans la fonction, et qui nous permettra d'accéder aux propriétés suivantes : readyState, status, responseTexte.
-      teddy.open('GET', "http://localhost:3000/api/teddies/"+id);//on demande à ouvrir une connexion vers notre serveur + id pour récuperer un objet.  méthode HTTP pour récuperer est GET 
-      teddy.send();//on envoie finalement la requête 
-      return true;
-    }
-    teddyRequest()
-      
-    
-     function contents() {
-        try{
-            if (teddy.readyState === XMLHttpRequest.DONE) {
-                if (teddy.status === 200) {
-                    let response = JSON.parse(this.responseText);
-                    console.log("la requête a aboutit!");//console.log la requête a aboutit
-                    let teddyChoice = response;
+teddyRequest().then(function(teddyChoice){
 
-                    // Declaration function
-                    const updateTeddyChoice = () => {//function en fleche qui contient notre template
-                      
-                        elementCard.innerHTML = `<div class="col-12 mb-3"> 
+    elementCard.innerHTML = `<div class="col-12 mb-3"> 
                                                     <div class="card text-white bg-dark">
                                                         <img class="card-img-top" src="${teddyChoice.imageUrl}" alt="${teddyChoice.description}"></img>
                                                         <div class="card-body">
@@ -70,10 +77,7 @@ const id = urlParams.get('id');
                         select.append(colorOption);
                             }
                         }
-                    };
-                    updateTeddyChoice();
-                    
-          
+
                     let buttonBuy = document.getElementById('buy');//le chemin vers le bouton acheter
 
                     buttonBuy.addEventListener('click', function() {// cliquer sur le bouton acheter pour mettre au panier le produit choisie
@@ -102,17 +106,28 @@ const id = urlParams.get('id');
                             }
                         }
                     });
+}).catch((e) => console.error("Une exception s’est produite : " + e.description))
+
+
+
+
+
+    
+
+     
+//on crée un nouvel objet de type  XMLHttpRequest  qui correspond à notre objet AJAX. C'est grâce à lui qu'on va créer et envoyer notre requête
+  
+      
+     
+      
+      
+   
+      
+//function en fleche qui contient notre template
+                      
+                        
                    
                
 
-                } else {
-                    console.error('Il y a eu un problème avec la requête.');
-                    elementCard.innerHTML = codeError;
-                }
-            }
-        }
-        catch( e ) {
-            console.log("Une exception s’est produite : " + e);
-        }    
-    }
-})()
+             
+
