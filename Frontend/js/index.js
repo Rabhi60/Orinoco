@@ -15,7 +15,7 @@ let teddiesRequest = () => {
             </div>`;
             return false;
         }
-        request.open('GET', "http://localhost:3000/api/teddies/");//  on demande à ouvrir une connexion vers notre service web. Nous avons mis une méthode HTTP GET, ainsi que l'URL des teddies ;
+        request.open('GET', "http://localhost:3000/api/teddies/");// On demande à ouvrir une connexion vers notre service web. Nous avons mis une méthode HTTP GET, ainsi que l'URL des teddies ;
         request.onreadystatechange = function () { // On utilise la propriété onreadystatechange  en lui passant une fonction. Cette fonction sera appelée à chaque fois que l'état de la requête évolue.
             if(request.readyState !== XMLHttpRequest.DONE) {     //readyState contient l'état de la requête ;     
                 return
