@@ -2,6 +2,8 @@
 
 let elementCard = document.getElementById('element-card');// #element-cart présent dans notre HTML
 let totalBuy = document.getElementById('totalBuy');
+let main = document.getElementById('main');
+let request;
 let response;
 let totalArticleChoice;
 let resultatTotalPrice = 0;
@@ -87,18 +89,21 @@ function send (){// fonction send qui va récupèrer le contenu qui sera envoyé
         getLocalStorage.push(order, resultatTotalPrice);
         localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
         window.location.replace("confirmed.html");// on est dirigé vers la page de confirmation
-    })
+    }).catch((e) => {//  la méthode catch() qui va prendre une unique fonction de rappel en argument qui va être appelée si la promesse est rompue.
+        console.error('Il y a eu un problème avec la requête.' + request.statusText);
+        main.innerHTML =  `<div class="col text-center my-5 ">
+            <h2 class='display-2'>Error ${request.status}</h2>
+            <h3 class='display-3'> ${request.statusText}</h3>
+            <p>veuillez nous excuser pour la gêne occasionnée</p>
+        </div>`;
+    });
 }
 
 function orderTeddies  (body) {//on a récupèré le contenu body à envoyer dans notre requête POST
     return new Promise((resolve, reject) =>{
-        let request = new XMLHttpRequest();
+        request = new XMLHttpRequest();
         if (!request) {
             console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
-            elementCard.innerHTML =  `<div class="col text-center">
-                <h2> Error 400 </h2>
-                <p>veuillez nous excuser pour la gêne occasionnée</p>
-            </div>`;
             return false;
         }
         request.open('POST','http://localhost:3000/api/teddies/order');

@@ -14,10 +14,6 @@ let teddyRequest = () => { // function teddyRequest()
         request = new XMLHttpRequest();// on crée notre requête 
         if (!request) {// si c'est différent de la requête on n'arrivera pas a faire notre requête
             console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
-            elementCard.innerHTML =  `<div class="col text-center">
-                <h2> Error 400 </h2>
-                <p>veuillez nous excuser pour la gêne occasionnée</p>
-            </div>`;
             return false; 
         }
         request.open('GET', `http://localhost:3000/api/teddies/${id}`);//on demande à ouvrir une connexion vers notre serveur + id pour récuperer un objet.  méthode HTTP pour récuperer est GET 
@@ -61,8 +57,9 @@ teddyRequest().then(function(teddyChoice){// ici on recupère la réponse de la 
 
 }).catch((e) => {// recupère l'erreur si reject
     console.error('Il y a eu un problème avec la requête.' + request.statusText);
-    elementCard.innerHTML =  `<div class="col text-center">
-        <h2> ${request.statusText}</h2>
+    elementCard.innerHTML =  `<div class="col text-center my-5 ">
+        <h2 class='display-2'>Error ${request.status}</h2>
+        <h3 class='display-3'> ${request.statusText}</h3>
         <p>veuillez nous excuser pour la gêne occasionnée</p>
     </div>`;
 })

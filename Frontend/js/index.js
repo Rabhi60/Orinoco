@@ -3,16 +3,13 @@
 // constante element-card  et request
 let elementCard = document.getElementById('element-card');
 let request;// On a déclaré la request
+
 // requete Get pour récuperer les produits
 let teddiesRequest = () => {
     return new Promise((resolve, reject) =>{// ajout d'une promise 
         request = new XMLHttpRequest();// On crée un nouvel objet de type  XMLHttpRequest  qui correspond à notre objet AJAX. C'est grâce à lui qu'on va créer et envoyer notre requête ;
         if (!request) {
             console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
-            elementCard.innerHTML =  `<div class="col text-center">
-                <h2> Error 400 </h2>
-                <p>veuillez nous excuser pour la gêne occasionnée</p>
-            </div>`;
             return false;
         }
         request.open('GET', "http://localhost:3000/api/teddies/");// On demande à ouvrir une connexion vers notre service web. Nous avons mis une méthode HTTP GET, ainsi que l'URL des teddies ;
@@ -47,8 +44,9 @@ teddiesRequest().then(function(totalTeddies){// ici on va récupérer la répons
     }
 }).catch((e) => {//  la méthode catch() qui va prendre une unique fonction de rappel en argument qui va être appelée si la promesse est rompue.
     console.error('Il y a eu un problème avec la requête.' + request.statusText);
-    elementCard.innerHTML =  `<div class="col text-center">
-        <h2> ${request.statusText}</h2>
+        elementCard.innerHTML =  `<div class="col text-center my-5 ">
+        <h2 class='display-2'>Error ${request.status}</h2>
+        <h3 class='display-3'> ${request.statusText}</h3>
         <p>veuillez nous excuser pour la gêne occasionnée</p>
     </div>`;
 });
