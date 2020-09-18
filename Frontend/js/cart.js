@@ -8,14 +8,14 @@ let resultatTotalPrice = 0;
 let resultatTotalQuantité = 0;
 //partie produits dans le panier
 
-let allStorage = () =>{
+let allStorage = () =>{// la fonction allStorage contient tout les produits envoyé sur le panier
     for (let i = 0; i < localStorage.length; i++){//boucle for pour récuperer les produits dans le localStorage
         let key = localStorage.key(i)
-        totalArticleChoice = (key, JSON.parse(localStorage.getItem(key)))
+        totalArticleChoice = (key, JSON.parse(localStorage.getItem(key)))// on récupère tout les produits
         return totalArticleChoice;
     }
 }
-allStorage();
+allStorage();//appel de la fonction
 
 let templateProductsTeddies = () =>{
     for(let i in totalArticleChoice){//boucle for pour le template des produits choisis
@@ -63,49 +63,52 @@ let templateTotalTeddies = () =>{
                 }
             }
         });
-    } else {
+    } else {// si le panier est vide on aura le texte ci-dessous
         elementCard.innerHTML = "<h2 class='text-center'>Votre panier est vide :(</h2>";
     }
 }
-templateTotalTeddies();
+templateTotalTeddies();//appel de la fonction
 
-function Send (){
+function send (){// fonction send qui va récupèrer le contenu qui sera envoyé au serveur 
     let firstName = document.getElementById('firstName').value;
     let lastName = document.getElementById('lastName').value;
     let address = document.getElementById('address').value;
     let city = document.getElementById('city').value;
     let email = document.getElementById('email').value;
-    let contact = {'firstName': firstName,  'lastName': lastName, 'address': address,  'city': city, 'email': email};
-    let products = [];
-    let body = {  contact, products };
-    totalArticleChoice.forEach( item => {
+    let contact = {'firstName': firstName,  'lastName': lastName, 'address': address,  'city': city, 'email': email};//object contact
+    let products = [];//tableau products
+    let body = {  contact, products };// body recupère les deux variables
+    totalArticleChoice.forEach( item => {// boucle forEach qui va être utile pour ajouter les id des produits dans le tableau products
         products.push(item.id);
     })
-    orderTeddies(body).then(function(){
+    orderTeddies(body).then(function(){//la réponse à la promise de la fonction orderTeddies
         let order = response.orderId;
         getLocalStorage = JSON.parse(localStorage.getItem('validate')) || [];
         getLocalStorage.push(order, resultatTotalPrice);
         localStorage.setItem('validate', JSON.stringify(getLocalStorage)) || [];
-        window.location.replace("confirmed.html");
+        window.location.replace("confirmed.html");// on est dirigé vers la page de confirmation
     })
 }
 
-function orderTeddies  (body) {
+function orderTeddies  (body) {//on a récupèré le contenu body à envoyer dans notre requête POST
     return new Promise((resolve, reject) =>{
         let request = new XMLHttpRequest();
         if (!request) {
             console.log('Abandon :( Impossible de créer une instance de XMLHTTP');
-            elementCard.innerHTML =  codeError;
+            elementCard.innerHTML =  `<div class="col text-center">
+                <h2> Error 400 </h2>
+                <p>veuillez nous excuser pour la gêne occasionnée</p>
+            </div>`;
             return false;
         }
         request.open('POST','http://localhost:3000/api/teddies/order');
-        request.setRequestHeader('content-type','application/json');
-        request.send(JSON.stringify(body));
+        request.setRequestHeader('content-type','application/json');// on utilise des headers pour une rquête POST, qui sont des en-têtes envoyés en même temps que la requête pour donner plus d'informations sur celle-ci.
+        request.send(JSON.stringify(body));// envoi la requête losque les conditions dans la fonction block
         request.onreadystatechange =  function () {
             if (request.readyState !== XMLHttpRequest.DONE)  {
                 return
             }
-            if (request.status !== 201){
+            if (request.status !== 201){//201 pour les requêtes POST (créé et modifié)
                 return reject(request.statusText)
             }
             response = JSON.parse(this.responseText);
@@ -120,14 +123,14 @@ buttonValidate.addEventListener('click', function block(event){
     let forms = document.getElementsByClassName('needs-validation');
     event.preventDefault();
     event.stopPropagation();
-    let validation = Array.prototype.filter.call(forms, function(form) {
-        if (form.checkValidity() === false) {
+    let validation = Array.prototype.filter.call(forms, function(form) {// permet de filtrer le contenu du formulaire
+        if (form.checkValidity() === false) {// si un ou plusieurs inputs ne sont pas bien rempli il y aura un code erreur et on sort de la fonction
             return form.classList.add('was-validated');
         } 
-        if (localStorage.length === 0){
+        if (localStorage.length === 0){// si le panier ne contient pas de produits aura le texte ci-dessous et on sort de la fonction
             return elementCard.innerHTML = "<h2 class='text-center'>Veuillez choisir au moins un teddy</h2>";
         }
-        Send();
+        send();// si les conditions précédentes sont correct alors on envoi notre requête et on efface notre localStorage
         localStorage.clear()
     });
 })
