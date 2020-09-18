@@ -7,7 +7,7 @@ if(numero === null){// l'utilisateur sera redirigé vers la page d'acceuil
     window.location.replace('/index.html');
 }
 numeroCommande.innerHTML = `Numero de commande : <span class='text-warning'>${numero[0]}€<span>`;//contenu du premier objet injecté dans notre DOM
-prixTotal.innerHTML = `prix total de votre commande : <span class='text-success'>${numero[1]}€<span>`;//contenu du deuxième objet injecté dans notre DOM
+prixTotal.innerHTML = `Prix total de votre commande : <span class='text-success'>${numero[1]}€<span>`;//contenu du deuxième objet injecté dans notre DOM
 
 //efface notre localStorage pour supprimer les données client après les avoir récupéré
 localStorage.clear();

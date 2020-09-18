@@ -48,28 +48,28 @@
                                 <li class="nav-item  active">
                                     <a class="nav-link" href="cart.html">Panier</a>
                                 </li>
-                                </ul>
+                            </ul>
                         </div>
-                        </nav>
+                    </nav>
                 </div>
             </div>
         </header>
             
         <!-- main -->
         <main>
-            <section class="jumbotron">
+            <section class="jumbotron  mt-3 mx-3">
                 <h1 class="text-center font-weight-bold">Votre panier Orinoco</h1>
             </section>
-
+            <!-- element-card aura les produits -->
             <div id="element-card"></div>
-
+            <!-- element-card aura le total des produits -->
             <div id="totalBuy"></div>
 
             <hr class="my-4">
 
+            <!-- Partie formulaire -->
             <section id="formulaire">
                 <div class="container">
-
                     <div class="py-5 text-center">
                         <img class="d-block mx-auto mb-4" src="../img/logo.png" alt="" width="200" height="72">
                         <h2>Formulaire de paiement</h2>
@@ -77,36 +77,36 @@
                     </div>
                 
                     <div class="row mx-auto">
-                        <div class="col-10 mx-auto ">
+                        <div class="col-12 mx-auto ">
                             <h4 class="mb-3">Adresse de facturation</h4>
                         </div>
 
                         <hr class="mb-4">    
 
-                        <form class="needs-validation mx-auto col-10" novalidate>
+                        <form class="needs-validation mx-auto col-md-10" novalidate>
                             <div class="row">
                                 <!-- Prénom -->
-                                <div class="col-md-6 mb-3">
+                                <div class=" col-md-6 mb-3">
                                     <label for="firstName">Prénom</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="Dupont" value="" required>
+                                    <input type="text" class="form-control" id="firstName" placeholder="Dupont" pattern="[A-Za-z ]{1,32}$" value="" required>
                                     <div class="invalid-feedback">
-                                    Un prénom valide est requis.
+                                        Un prénom valide est requis.
                                     </div>
                                 </div>
 
                                 <!-- Nom -->
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName">Nom</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Alain" value="" required>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Alain" pattern="[A-Za-z ]{1,32}$" value="" required>
                                     <div class="invalid-feedback">  
-                                Un nom de famille valide est requis.
+                                        Un nom de famille valide est requis.
                                     </div>
                                 </div>
                             
                                 <!-- e-mail -->
                                 <div class="mb-3 col-md-7">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}" title="Invalid email address" placeholder="you@example.com" required>
+                                    <input type="email" class="form-control" id="email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="you@example.com" required>
                                     <div class="invalid-feedback">
                                         Veuillez saisir une adresse e-mail valide.
                                     </div>
@@ -115,18 +115,18 @@
                                 <!-- adresse postale -->
                                 <div class="ml-0 mb-3 col-md-6">
                                     <label for="address">Adresse</label>
-                                    <input type="text" class="form-control" id="address" placeholder="7 avenue de la liberté 75010" required>
+                                    <input type="text" class="form-control" id="address" placeholder="7 avenue de la liberté"  pattern="[1-9][A-Za-z0-9-, ]{1,35}$" required>
                                     <div class="invalid-feedback">
-                                        Veuillez indiquer votre adresse d'expédition.
+                                        Veuillez indiquer adresse d'expédition valide.
                                     </div>
                                 </div>
                 
                                 <!-- Ville -->
                                 <div class="mb-3 col-md-6">
                                     <label for="address">Ville</label>
-                                    <input type="text" class="form-control" id="city" placeholder="Paris" required>
+                                    <input type="text" class="form-control" id="city" placeholder="Paris" pattern="[A-Za-z ]{1,32}$" required>
                                     <div class="invalid-feedback">
-                                    Veuillez indiquer votre ville d'expédition.
+                                        Veuillez indiquer ville d'expédition valide.
                                     </div>
                                 </div>
                             </div>
@@ -136,10 +136,10 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
                                     <label class="form-check-label" for="invalidCheck">
-                                    J'accepte les termes et conditions.
+                                        J'accepte les termes et conditions.
                                     </label>
                                     <div class="invalid-feedback">
-                                    Vous devez accepter avant de soumettre.
+                                        Vous devez accepter avant de soumettre.
                                     </div>
                                 </div>
                             </div>
@@ -154,21 +154,22 @@
             </section>
         </main>
 
-            <footer class="bg-dark py-2">
-                <section class="container">
-                    <h3 class="text-center text-white"><img class="panier" src="../img/favicon.png" width='30' alt="panier"> Orinoco - 2020</h3>
-                    <div class="row ">
-                        <div class="col">
-                            <ul class="list-inline text-center">
-                                <li class="list-inline-item"><a href="#">À propos</a></li>
-                                <li class="list-inline-item">&middot;</li>
-                                <li class="list-inline-item"><a href="#">Vie privée</a></li>
-                                <li class="list-inline-item">&middot;</li>
-                                <li class="list-inline-item"><a href="#">Conditions d'utilisations</a></li>
-                              </ul>
-                        </div>
+        <!-- footer -->
+        <footer class="bg-dark py-2">
+            <section class="container">
+                <h3 class="text-center text-white"><img class="panier" src="../img/favicon.png" width='30' alt="panier"> Orinoco - 2020</h3>
+                <div class="row ">
+                    <div class="col">
+                        <ul class="list-inline text-white text-center">
+                            <li class="list-inline-item"><a href="maintenance.html">À propos</a></li>
+                            <li class="list-inline-item">&middot;</li>
+                            <li class="list-inline-item"><a href="maintenance.html">Vie privée</a></li>
+                            <li class="list-inline-item">&middot;</li>
+                            <li class="list-inline-item"><a href="maintenance.html">Conditions d'utilisations</a></li>
+                        </ul>
                     </div>
-                </section>
-            </footer>
+                </div>
+            </section>
+        </footer>
     </body>
 </html>
