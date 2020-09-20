@@ -87,7 +87,7 @@
                                 <!-- Prénom -->
                                 <div class=" col-md-6 mb-3">
                                     <label for="firstName">Prénom</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="Dupont" pattern="[A-Za-z ]{1,32}$" value="" required>
+                                    <input type="text" class="form-control" id="firstName" placeholder="Dupont" pattern="[a-zA-ZÀ-ÿ' -]{1,32}" value="" required>
                                     <div class="invalid-feedback">
                                         Un prénom valide est requis.
                                     </div>
@@ -96,7 +96,7 @@
                                 <!-- Nom -->
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName">Nom</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Alain" pattern="[A-Za-z ]{1,32}$" value="" required>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Alain" pattern="[a-zA-ZÀ-ÿ' -]{1,32}" value="" required>
                                     <div class="invalid-feedback">  
                                         Un nom de famille valide est requis.
                                     </div>
@@ -105,7 +105,7 @@
                                 <!-- e-mail -->
                                 <div class="mb-3 col-md-7">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="you@example.com" required>
+                                    <input type="email" class="form-control" id="email"  pattern="[A-z0-9._+-]+[@]{1}[A-z0-9._-]+[.]{1}[A-z]{2,15}" placeholder="you@example.com" required>
                                     <div class="invalid-feedback">
                                         Veuillez saisir une adresse e-mail valide.
                                     </div>
@@ -114,7 +114,7 @@
                                 <!-- adresse postale -->
                                 <div class="ml-0 mb-3 col-md-6">
                                     <label for="address">Adresse</label>
-                                    <input type="text" class="form-control" id="address" placeholder="7 avenue de la liberté" maxlength="60" pattern="[0-9]{1,3}[a-zA-Z, ]+[ ]+[a-zA-Z0-9, ]{1,}$" required>
+                                    <input type="text" class="form-control" id="address" placeholder="7 avenue de la liberté" maxlength="60" pattern="[0-9]{1,3}[A-z, ]+[ ]+[a-zA-Z0-9,À-ÿ' -]{1,}" required>
                                     <div class="invalid-feedback">
                                         Veuillez indiquer adresse d'expédition valide.
                                     </div>
@@ -123,7 +123,7 @@
                                 <!-- Ville -->
                                 <div class="mb-3 col-md-6">
                                     <label for="address">Ville</label>
-                                    <input type="text" class="form-control" id="city" placeholder="Paris" pattern="[A-Za-z ]{1,32}$" required>
+                                    <input type="text" class="form-control" id="city" placeholder="Paris" pattern="[a-zA-ZÀ-ÿ' -]{1,32}" required>
                                     <div class="invalid-feedback">
                                         Veuillez indiquer ville d'expédition valide.
                                     </div>
